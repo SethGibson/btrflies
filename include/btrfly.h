@@ -14,6 +14,7 @@ namespace BFly
 	{
 	public:
 		ButterFly();
+		ButterFly(Vec2i pPos, Vec2i pVel, gl::Texture pTex);
 		~ButterFly();
 
 		void step();
@@ -21,7 +22,8 @@ namespace BFly
 
 	private:
 		bool mSeeking;
-		Vec2i mTarget;
+		Vec2i mTarget, mPos, mVel;
+		gl::Texture mTexture;
 	};
 
 	class Flight
