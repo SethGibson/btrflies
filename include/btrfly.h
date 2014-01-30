@@ -22,6 +22,7 @@ namespace BFly
 
 	private:
 		bool mSeeking;
+		int mTargetLife;
 		Vec2i mTarget, mPos, mVel;
 		gl::Texture mTexture;
 	};
@@ -34,10 +35,9 @@ namespace BFly
 
 		void step();
 		void show();
-		void add();
-		void remove();
 
 	private:
+		int mCount;
 		vector<ButterFly> mRabble;
 	};
 }

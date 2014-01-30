@@ -1,4 +1,5 @@
 #include "btrfly.h"
+#include "cinder/Rand.h"
 
 namespace BFly
 {
@@ -11,7 +12,7 @@ namespace BFly
 		}
 
 		//ugh initialization list!!!
-		ButterFly::ButterFly(Vec2i pPos, Vec2i pVel, gl::Texture pTex)
+		ButterFly::ButterFly(Vec2i pPos, Vec2i pVel, gl::Texture pTex):mPos(pPos),mVel(pVel),mTexture(pTex)
 		{
 		}
 
@@ -21,11 +22,20 @@ namespace BFly
 
 		void ButterFly::step()
 		{
+			//move towards target
+			if(mTargetLife>0)
+				--mTargetLife;
+			else
+			{
+				//reset target
+				mTarget = Vec2i(randInt(0,640), randInt(0,240));
+				//reset targetlife
+			}
 		}
 
 		void ButterFly::show()
 		{
-			//gl::draw(mTexture, mPos);
+			gl::draw(mTexture, mPos);
 		}
 
 		//class Flight
@@ -39,20 +49,13 @@ namespace BFly
 
 		void Flight::step()
 		{
-			//for_each bf in mRabble bf.step()
+			for(vector<ButterFly>::iterator bfit=mRabble.begin();bfit!=mRabble.end();++bfit)
+				bfit->step();
 		}
 
 		void Flight::show()
 		{
-			//for_each bf in mRabble bf.show()
-		}
-
-		void Flight::add()
-		{
-			//mRabble.push_back
-		}
-
-		void Flight::remove()
-		{
+			for(vector<ButterFly>::iterator bfit=mRabble.begin();bfit!=mRabble.end();++bfit)
+				bfit->show();
 		}
 }
