@@ -22,6 +22,9 @@
     <Filter Include="Blocks\OpenCV\include">
       <UniqueIdentifier>{7513511A-7180-4DDF-B848-399ACE541DAB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{b785f44d-3d84-4a35-b786-aac44bb031bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\btrfliesApp.cpp">
@@ -52,5 +55,13 @@
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\bflies.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="..\assets\bflies.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
