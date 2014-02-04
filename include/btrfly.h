@@ -14,16 +14,17 @@ namespace BFly
 	{
 	public:
 		ButterFly();
-		ButterFly(Vec2i pPos, Vec2i pVel, gl::Texture pTex);
+		ButterFly(Vec2i pPos, gl::Texture pTex);
 		~ButterFly();
 
 		void step();
 		void show();
-
+		Vec2f getVel();
 	private:
 		bool mSeeking;
 		int mTargetLife;
-		Vec2i mTarget, mPos, mVel;
+		Vec2i mPos;
+		Vec2f mVel, mSpd;
 		gl::Texture mTexture;
 	};
 
@@ -31,14 +32,18 @@ namespace BFly
 	{
 	public:
 		Flight();
+		Flight(int pCount, vector<gl::Texture> pTex);
 		~Flight();
 
 		void step();
-		void show();
+		void showL0();
+		void showL2();
 
 	private:
 		int mCount;
 		vector<ButterFly> mRabble;
+		vector<ButterFly> mLayer0;
+		vector<ButterFly> mLayer2;
 	};
 }
 #endif __BTRFLY_H__

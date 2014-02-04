@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\code\creative\cinder_0.8.5_vc2012\include";"..\..\..\code\creative\cinder_0.8.5_vc2012\boost";..\blocks\FMOD\include;..\blocks\OpenCV\include;..\blocks\OpenCV\include\opencv2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(CINDER_ROOT)\include;$(CINDER_ROOT)\boost;..\blocks\FMOD\include;..\blocks\OpenCV\include;..\blocks\OpenCV\include\opencv2</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -61,11 +61,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\code\creative\cinder_0.8.5_vc2012\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CINDER_ROOT)\include;..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder_d.lib;%(AdditionalDependencies);..\blocks\FMOD\lib\msw\fmodex_vc.lib;..\blocks\OpenCV\lib\vc11\opencv_calib3d243d.lib;..\blocks\OpenCV\lib\vc11\opencv_contrib243d.lib;..\blocks\OpenCV\lib\vc11\opencv_core243d.lib;..\blocks\OpenCV\lib\vc11\opencv_features2d243d.lib;..\blocks\OpenCV\lib\vc11\opencv_flann243d.lib;..\blocks\OpenCV\lib\vc11\opencv_gpu243d.lib;..\blocks\OpenCV\lib\vc11\opencv_imgproc243d.lib;..\blocks\OpenCV\lib\vc11\opencv_legacy243d.lib;..\blocks\OpenCV\lib\vc11\opencv_ml243d.lib;..\blocks\OpenCV\lib\vc11\opencv_nonfree243d.lib;..\blocks\OpenCV\lib\vc11\opencv_objdetect243d.lib;..\blocks\OpenCV\lib\vc11\opencv_photo243d.lib;..\blocks\OpenCV\lib\vc11\opencv_stitching243d.lib;..\blocks\OpenCV\lib\vc11\opencv_ts243d.lib;..\blocks\OpenCV\lib\vc11\opencv_video243d.lib;..\blocks\OpenCV\lib\vc11\opencv_videostab243d.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\code\creative\cinder_0.8.5_vc2012\lib";"..\..\..\code\creative\cinder_0.8.5_vc2012\lib\msw"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CINDER_ROOT)\lib;$(CINDER_ROOT)\lib\msw</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
