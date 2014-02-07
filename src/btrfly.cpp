@@ -2,7 +2,7 @@
 #include "cinder/Rand.h"
 
 namespace BFly
-{
+{b
 		//class ButterFly
 		ButterFly::ButterFly()
 		{

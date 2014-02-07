@@ -52,7 +52,7 @@ void btrfliesApp::setup()
 	mDrawTex.push_back(loadImage(loadAsset("bfly_03.png")));
 	mDrawTex.push_back(loadImage(loadAsset("bfly_04.png")));
 	mBkg = loadImage(loadAsset("garden.jpg"));
-	mSwarm = Flight(10, mDrawTex);
+	mSwarm = Flight(25, mDrawTex);
 
 	mFBO = gl::Fbo(640,480,true);
 	try
