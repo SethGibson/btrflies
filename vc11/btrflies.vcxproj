@@ -115,9 +115,11 @@
   <ItemGroup>
     <ClCompile Include="..\src\btrfliesApp.cpp" />
     <ClCompile Include="..\src\btrfly.cpp" />
+    <ClCompile Include="..\src\flight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\btrfly.h" />
+    <ClInclude Include="..\include\flight.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\blocks\OpenCV\include\CinderOpenCV.h" />
   </ItemGroup>

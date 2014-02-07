@@ -19,31 +19,14 @@ namespace BFly
 
 		void step();
 		void show();
-		Vec2f getVel();
+
 	private:
-		bool mSeeking;
-		int mTargetLife;
+		int mTargetLife, mSpriteId;
+		float mSize;
 		Vec2i mPos;
-		Vec2f mVel, mSpd;
+		Vec2f mVel;
 		gl::Texture mTexture;
 	};
-
-	class Flight
-	{
-	public:
-		Flight();
-		Flight(int pCount, vector<gl::Texture> pTex);
-		~Flight();
-
-		void step();
-		void showL0();
-		void showL2();
-
-	private:
-		int mCount;
-		vector<ButterFly> mRabble;
-		vector<ButterFly> mLayer0;
-		vector<ButterFly> mLayer2;
-	};
 }
+
 #endif __BTRFLY_H__
