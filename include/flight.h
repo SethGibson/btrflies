@@ -16,12 +16,12 @@ namespace BFly
 		Flight(int pCount, vector<gl::Texture> pTex);
 		~Flight();
 
-		void step();
+		void step(int pSpriteId);
 		void showL0();
 		void showL2();
 
 	private:
-		int mCount;
+		int mCount, mSpriteId;
 		vector<ButterFly> mRabble;
 		vector<ButterFly> mLayer0;
 		vector<ButterFly> mLayer2;

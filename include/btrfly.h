@@ -18,11 +18,13 @@ namespace BFly
 		~ButterFly();
 
 		void step();
-		void show();
+		void checkAndReflect();
+		void show(int pSpriteId);
+		Vec2i getVel(){return mVel;};
 
 	private:
-		int mTargetLife, mSpriteId;
-		float mSize;
+		int mTargetLife;
+		int mSize;
 		Vec2i mPos;
 		Vec2f mVel;
 		gl::Texture mTexture;

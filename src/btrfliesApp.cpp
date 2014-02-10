@@ -7,6 +7,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/Surface.h"
 #include "btrfly.h"
+#include "flight.h"
 #include "util_pipeline.h"
 
 using namespace ci;
@@ -47,10 +48,10 @@ void btrfliesApp::prepareSettings(Settings *pSettings)
 
 void btrfliesApp::setup()
 {
-	mDrawTex.push_back(loadImage(loadAsset("bfly_01.png")));
-	mDrawTex.push_back(loadImage(loadAsset("bfly_02.png")));
-	mDrawTex.push_back(loadImage(loadAsset("bfly_03.png")));
-	mDrawTex.push_back(loadImage(loadAsset("bfly_04.png")));
+	mDrawTex.push_back(loadImage(loadAsset("btrflySprite01.png")));
+	mDrawTex.push_back(loadImage(loadAsset("btrflySprite02.png")));
+	mDrawTex.push_back(loadImage(loadAsset("btrflySprite03.png")));
+	mDrawTex.push_back(loadImage(loadAsset("btrflySprite04.png")));
 	mBkg = loadImage(loadAsset("garden.jpg"));
 	mSwarm = Flight(25, mDrawTex);
 
@@ -81,7 +82,8 @@ void btrfliesApp::keyDown( KeyEvent event )
 
 void btrfliesApp::update()
 {
-	mSwarm.step();
+	int spriteId = getElapsedFrames()%9;
+	mSwarm.step(spriteId);
 	
 	if(mPXC.AcquireFrame(true))
 	{
@@ -108,7 +110,7 @@ void btrfliesApp::draw()
 {
 	gl::clear(Color(0,0,0));
 	gl::color(Color::white());
-	//drawbackground
+
 	if(mDrawFeed)
 		gl::draw(mRGBFeed,Vec2f::zero());
 	else
@@ -116,9 +118,6 @@ void btrfliesApp::draw()
 	mSwarm.showL0();
 	getMasked();
 	mSwarm.showL2();
-	//draw layer 0
-	//figure out mask
-	//draw layer 1
 }
 
 void btrfliesApp::quit()

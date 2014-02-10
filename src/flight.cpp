@@ -23,21 +23,32 @@ namespace BFly
 	{
 	}
 
-	void Flight::step()
+	void Flight::step(int pSpriteId)
 	{
+		mSpriteId = pSpriteId;
 		mLayer0.clear();
 		mLayer2.clear();
+		for(vector<ButterFly>::iterator bfit=mRabble.begin();bfit!=mRabble.end();++bfit)
+		{
+			bfit->step();
+			Vec2i vel = bfit->getVel();
+			if(vel.x<0)
+				mLayer0.push_back(*(bfit));
+			else
+				mLayer2.push_back(*(bfit));
+		}
+
 	}
 
 	void Flight::showL0()
 	{
 		for(vector<ButterFly>::iterator bfit=mLayer0.begin();bfit!=mLayer0.end();++bfit)
-			bfit->show();
+			bfit->show(mSpriteId);
 	}
 
 	void Flight::showL2()
 	{
 		for(vector<ButterFly>::iterator bfit=mLayer2.begin();bfit!=mLayer2.end();++bfit)
-			bfit->show();
+			bfit->show(mSpriteId);
 	}
 }
