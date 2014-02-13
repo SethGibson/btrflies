@@ -21,6 +21,7 @@ namespace BFly
 		void checkAndReflect();
 		void show(int pSpriteId);
 		Vec2i getVel(){return mVel;};
+		void setVel(Vec2f pVel){mVel.set(pVel.x,pVel.y);};
 
 	private:
 		int mTargetLife;

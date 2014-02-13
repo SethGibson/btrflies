@@ -2,19 +2,19 @@
 #include "cinder/Rand.h"
 
 float S_SIZES[] = {.25f,.5f,.75f};
+int S_MINVEL = 2;
+int S_MAXVEL = 6;
 namespace BFly
 {
-	//class ButterFly
 	ButterFly::ButterFly()
 	{
 	}
 
-	//ugh initialization list!!!
 	ButterFly::ButterFly(Vec2i pPos, gl::Texture pTex):mPos(pPos),mTexture(pTex)
 	{
 		mSize = 128*S_SIZES[randInt(3)];
 		mVel = Vec2i(320,240)-mPos;
-		mVel.limit(randInt(4,8));
+		mVel.limit(randInt(S_MINVEL,S_MAXVEL));
 	}
 
 	ButterFly::~ButterFly()
@@ -38,7 +38,6 @@ namespace BFly
 	void ButterFly::checkAndReflect()
 	{
 		int quad = -1;
-		//reflect x
 		if(mPos.x<0||mPos.x>639-mSize)
 		{
 			if(mPos.x<0)
@@ -47,7 +46,6 @@ namespace BFly
 				quad=mPos.y<240?1:3;
 		}
 
-		//reflect y
 		else if(mPos.y<0||mPos.y>479-mSize)
 		{
 			if(mPos.y<0)
@@ -82,7 +80,7 @@ namespace BFly
 				}
 			}
 
-			mVel.limit(randInt(4,8));
+			mVel.limit(randInt(S_MINVEL,S_MAXVEL));
 		}
 	}
 }

@@ -5,7 +5,7 @@
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/ImageIo.h"
-#include "cinder/Surface.h"
+#include "cinder/Rand.h"
 #include "btrfly.h"
 #include "flight.h"
 #include "util_pipeline.h"
@@ -27,9 +27,11 @@ public:
 
 private:
 	void getMasked();
+	Vec2f getMappedColor(int px, int py);
 
-	bool mDrawFeed;
-	Surface8u mSurfL0, mSurfL1, mSurfL2;
+	bool mDrawFeed, mTracking;
+	float* mUVBuffer;
+	Vec2f mFingerPos;
 	gl::Texture mBkg;
 	gl::Texture mRGBFeed, mSegFeed;
 	gl::Fbo mFBO;
@@ -37,7 +39,6 @@ private:
 	vector<gl::Texture> mDrawTex;	
 	UtilPipeline mPXC;
 	Flight mSwarm;
-
 };
 
 void btrfliesApp::prepareSettings(Settings *pSettings)
@@ -67,11 +68,12 @@ void btrfliesApp::setup()
 	gl::enableAlphaBlending();
 	
 	mPXC.EnableImage(PXCImage::COLOR_FORMAT_RGB24);
+	mPXC.EnableImage(PXCImage::COLOR_FORMAT_DEPTH);
 	mPXC.EnableGesture();
 	mPXC.EnableSegmentation();
 	mPXC.Init();
 
-	mDrawFeed = false;
+	mDrawFeed = true;
 }
 
 void btrfliesApp::keyDown( KeyEvent event )
@@ -82,15 +84,17 @@ void btrfliesApp::keyDown( KeyEvent event )
 
 void btrfliesApp::update()
 {
-	int spriteId = getElapsedFrames()%9;
-	mSwarm.step(spriteId);
+	int spriteId = getElapsedFrames();
+	mSwarm.step(spriteId, false);
 	
 	if(mPXC.AcquireFrame(true))
 	{
+		mTracking = false;
 		PXCImage *rgbImg = mPXC.QueryImage(PXCImage::IMAGE_TYPE_COLOR);
+		PXCImage *depthImg = mPXC.QueryImage(PXCImage::IMAGE_TYPE_DEPTH);
 		PXCImage *segImg = mPXC.QuerySegmentationImage();
-		PXCImage::ImageData rgbData;
-		PXCImage::ImageData segData;
+		PXCImage::ImageData rgbData, segData, depthData;
+		
 		if(rgbImg->AcquireAccess(PXCImage::ACCESS_READ, &rgbData)>=PXC_STATUS_NO_ERROR)
 		{
 			mRGBFeed = gl::Texture(rgbData.planes[0], GL_BGR, 640,480);
@@ -100,6 +104,32 @@ void btrfliesApp::update()
 		{
 			mSegFeed = gl::Texture(segData.planes[0], GL_LUMINANCE, 320,240);
 			segImg->ReleaseAccess(&segData);
+		}
+		if(depthImg->AcquireAccess(PXCImage::ACCESS_READ, &depthData)>=PXC_STATUS_NO_ERROR)
+		{
+			mUVBuffer = (float *)depthData.planes[2];
+			depthImg->ReleaseAccess(&depthData);
+		}
+
+		PXCGesture *gest = mPXC.QueryGesture();
+		PXCGesture::Gesture gestData;
+		PXCGesture::GeoNode nodeData;
+		pxcStatus foundNode = PXC_STATUS_ITEM_UNAVAILABLE;
+
+		foundNode=gest->QueryNodeData(0,PXCGesture::GeoNode::LABEL_BODY_HAND_PRIMARY|PXCGesture::GeoNode::LABEL_FINGER_THUMB, &nodeData);
+		if(foundNode<PXC_STATUS_NO_ERROR)
+			foundNode=gest->QueryNodeData(0,PXCGesture::GeoNode::LABEL_BODY_HAND_PRIMARY|PXCGesture::GeoNode::LABEL_FINGER_INDEX, &nodeData);
+
+		if(foundNode>=PXC_STATUS_NO_ERROR)
+		{
+			console() << "Found Hand" << endl;
+			mTracking = true;
+			mFingerPos.set(getMappedColor((int)nodeData.positionImage.x, (int)nodeData.positionImage.y));
+		}
+		else
+		{
+			console() << "No Hand" << endl;
+			mTracking = false;
 		}
 
 		mPXC.ReleaseFrame();
@@ -118,11 +148,13 @@ void btrfliesApp::draw()
 	mSwarm.showL0();
 	getMasked();
 	mSwarm.showL2();
+	gl::drawSolidCircle(mFingerPos, 10);
 }
 
 void btrfliesApp::quit()
 {
 	mPXC.Close();
+	delete[] mUVBuffer;
 }
 
 void btrfliesApp::getMasked()
@@ -145,6 +177,13 @@ void btrfliesApp::getMasked()
 	mRGBFeed.unbind();
 	mFBO.unbindTexture();
 	mShader.unbind();
+}
+
+Vec2f btrfliesApp::getMappedColor(int px, int py)
+{
+    float cx = mUVBuffer[(py * 320 + px) * 2] * 640 + 0.5f;
+    float cy = mUVBuffer[(py * 320 + px) * 2 + 1] * 640 + 0.5f;
+	return Vec2f(cx,cy);
 }
 
 CINDER_APP_NATIVE( btrfliesApp, RendererGl )
